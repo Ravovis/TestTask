@@ -102,5 +102,69 @@ namespace UnitTestApp.Tests
 			// Assert
 			Assert.NotNull(products);
 		}
+
+		[Fact]
+		public async Task Product_Service_Test_MostCommonWordsDoNotHaveEmptyStrings()
+		{
+			// Arrange
+			var logger = GetLogger();
+
+			var service = new ProductService(logger);
+			// Act
+
+			var allProducts = await service.GetAllProductsFromStorage();
+            var mostCommonWords = service.Get10MostCommonWordsExcept5MostCommon(allProducts.Select(x => x.Description));
+
+            // Assert
+            Assert.All(mostCommonWords, x => Assert.NotEqual("", x));
+        }
+
+		[Fact]
+		public async Task Product_Service_Test_MostCommonWordsWasTrimmed()
+		{
+			// Arrange
+			var logger = GetLogger();
+
+			var service = new ProductService(logger);
+			// Act
+
+			var allProducts = await service.GetAllProductsFromStorage();
+            var mostCommonWords = service.Get10MostCommonWordsExcept5MostCommon(allProducts.Select(x => x.Description));
+
+            // Assert
+            Assert.All(mostCommonWords, x => Assert.True(x[0] != ' ' && x[x.Length - 1] != ' '));
+        }
+
+		[Fact]
+		public async Task Test_Get10MostCommonWordsExcept5MostCommon_Method()
+		{
+			var logger = GetLogger();
+			// Arrange 
+			var service = new ProductService(logger);
+			// Act 
+
+			var products = await service.GetAllProductsFromStorage();
+			var allDescriptions = products.Select(x => x.Description);
+
+			var result = service.Get10MostCommonWordsExcept5MostCommon(allDescriptions);
+
+			// Assert 
+			Assert.DoesNotContain(result, word => word.Length < 2 && string.IsNullOrWhiteSpace(word));
+		}
+
+		[Fact]
+		public async Task Product_Service_Test_FilterNullWillNotGiveAnyProblem()
+		{
+			// Arrange
+			var logger = GetLogger();
+
+			var service = new ProductService(logger);
+			// Act
+			var products = await service.GetFilteredOrders(null, null, null, null);
+
+			// Assert
+			Assert.NotEmpty(products);
+			Assert.NotNull(products);
+		}
 	}
 }

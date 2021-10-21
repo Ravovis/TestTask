@@ -25,6 +25,8 @@ namespace Services.Services
 
         public async Task<IEnumerable<Product>> GetFilteredOrders(int? maxprice = null, int? minprice = null, string[] sizes = null, string[] highlightWords = null)
         {
+            sizes = sizes ?? new string[] { };
+            highlightWords = highlightWords ?? new string[] { };
             var allProducts = await GetAllProductsFromStorage();
             var mostCommonWords = Get10MostCommonWordsExcept5MostCommon(allProducts.Select(x => x.Description));
             var answer = allProducts
