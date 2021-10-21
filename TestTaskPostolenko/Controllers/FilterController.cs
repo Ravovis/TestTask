@@ -1,8 +1,12 @@
 ﻿using Infrastrucuture;
 using Infrastrucuture.DTO;
+using Infrastrucuture.Models;
+using Infrastrucuture.Result_Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Services.Interfaces;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace TestTaskPostolenko.Controllers
@@ -36,16 +40,18 @@ namespace TestTaskPostolenko.Controllers
         /// <example>
         /// GET: /product
         /// </example>
-        public async Task<IActionResult> Get([FromQuery] ProductSearchDTO productSearchDTO)
+        public async Task<APIResult<IEnumerable<Product>>> Get([FromQuery] ProductSearchDTO productSearchDTO)
         {
             if (ModelState.IsValid)
             {
-                return Ok(await _productService.GetFilteredOrders(productSearchDTO.Maxprice, productSearchDTO.Minprice, productSearchDTO?.Sizes?.Split(","), productSearchDTO?.Highlight?.Split(",")));
+                var products = await _productService.GetFilteredOrders(productSearchDTO.Maxprice, productSearchDTO.Minprice, productSearchDTO?.Sizes?.Split(","), productSearchDTO?.Highlight?.Split(","));
+
+                return new APIResult<IEnumerable<Product>> { Data = products, StatusCode = HttpContext.Response.StatusCode };
             }
             else
             {
                 _logger.LogError(LogMessages.ModelWasInvalid);
-                return BadRequest();
+                return new APIResult<IEnumerable<Product>> { ErrorMessage = LogMessages.ModelWasInvalid, StatusCode = HttpContext.Response.StatusCode };
             }
         }
     }
