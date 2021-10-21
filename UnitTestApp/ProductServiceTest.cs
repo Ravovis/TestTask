@@ -74,5 +74,33 @@ namespace UnitTestApp.Tests
 			// Assert
 			Assert.Empty(products);
 		}
+
+		[Fact]
+		public async Task Product_Service_Test_GetFilteredOrdersWillNotReturnEmptyResultWithNoParameters()
+		{
+			// Arrange
+			var logger = GetLogger();
+
+			var service = new ProductService(logger);
+			// Act
+			var products = await service.GetFilteredOrders();
+
+			// Assert
+			Assert.NotEmpty(products);
+		}
+
+		[Fact]
+		public async Task Product_Service_Test_GetFilteredOrdersWillNotReturnNull()
+		{
+			// Arrange
+			var logger = GetLogger();
+
+			var service = new ProductService(logger);
+			// Act
+			var products = await service.GetFilteredOrders();
+
+			// Assert
+			Assert.NotNull(products);
+		}
 	}
 }
