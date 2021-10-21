@@ -9,7 +9,7 @@ namespace Infrastrucuture.DTO
         public int? Maxprice { get; set; } = null;
         [Range(0, Int32.MaxValue)]
         public int? Minprice { get; set; } = null;
-        public string Sizes { get; set; } = null;
+        public string Size { get; set; } = null;
         public string Highlight { get; set; } = null;
     }
 }

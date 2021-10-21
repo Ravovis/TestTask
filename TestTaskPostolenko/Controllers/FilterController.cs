@@ -44,7 +44,7 @@ namespace TestTaskPostolenko.Controllers
         {
             if (ModelState.IsValid)
             {
-                var products = await _productService.GetFilteredOrders(productSearchDTO.Maxprice, productSearchDTO.Minprice, productSearchDTO?.Sizes?.Split(","), productSearchDTO?.Highlight?.Split(","));
+                var products = await _productService.GetFilteredOrders(productSearchDTO.Maxprice, productSearchDTO.Minprice, productSearchDTO?.Size?.Split(","), productSearchDTO?.Highlight?.Split(","));
 
                 return new APIResult<IEnumerable<Product>> { Data = products, StatusCode = HttpContext.Response.StatusCode };
             }
