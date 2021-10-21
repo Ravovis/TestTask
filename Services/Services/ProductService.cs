@@ -58,17 +58,18 @@ namespace Services.Services
         public IEnumerable<string> Get10MostCommonWordsExcept5MostCommon(IEnumerable<string> stringsToProceed)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendJoin(" ", stringsToProceed);
+            sb.AppendJoin(" ", stringsToProceed.Select(x=>x.Trim()));
 
             var result =  Regex.Split(sb.ToString(), @"\W|_")
-                        .GroupBy(x => x)
-                        .Select(x => new
-                        {
-                            KeyField = x.Key,
-                            Count = x.Count()
-                        })
-                        .OrderByDescending(x => x.Count)
-                        .Skip(5).Take(10).Select(x => x.KeyField);
+                .Where(x=>x.Length>=1)
+                .GroupBy(x => x)
+                .Select(x => new
+                {
+                    KeyField = x.Key,
+                    Count = x.Count()
+                })
+                .OrderByDescending(x => x.Count)
+                .Skip(5).Take(10).Select(x => x.KeyField);
 
             _logger.LogInformation(LogMessages.GotMostCommonWords);
 
