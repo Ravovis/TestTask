@@ -12,19 +12,19 @@ namespace TestTaskPostolenko.Controllers
     /// </summary>
     [ApiController]
     [Route("[controller]")]
-    public class ProductController : ControllerBase
+    public class FilterController : ControllerBase
     {
         /// <summary>
         /// Product Controller Constructor
         /// </summary>
-        public ProductController(IProductService productService, ILogger<ProductController> logger)
+        public FilterController(IProductService productService, ILogger<FilterController> logger)
         {
             _productService = productService;
             _logger = logger;
         }
 
         private IProductService _productService { get; set; }
-        private ILogger<ProductController> _logger { get; set; }
+        private ILogger<FilterController> _logger { get; set; }
 
         /// <summary>
         /// Gets all Product with filters
