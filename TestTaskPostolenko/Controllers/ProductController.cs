@@ -7,11 +7,16 @@ using System.Threading.Tasks;
 
 namespace TestTaskPostolenko.Controllers
 {
+    /// <summary>
+    /// Product Controller
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
-        
+        /// <summary>
+        /// Product Controller Constructor
+        /// </summary>
         public ProductController(IProductService productService, ILogger<ProductController> logger)
         {
             _productService = productService;
@@ -20,6 +25,17 @@ namespace TestTaskPostolenko.Controllers
 
         private IProductService _productService { get; set; }
         private ILogger<ProductController> _logger { get; set; }
+
+        /// <summary>
+        /// Gets all Product with filters
+        /// </summary>
+        /// <param name="productSearchDTO">Product Search DTO</param>
+        /// <returns>List of Products</returns>
+        /// <response code="200">Success</response>
+        /// <response code="500">Unexpected Error</response>
+        /// <example>
+        /// GET: /product
+        /// </example>
         public async Task<IActionResult> Get([FromQuery] ProductSearchDTO productSearchDTO)
         {
             if (ModelState.IsValid)
